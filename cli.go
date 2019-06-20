@@ -211,6 +211,13 @@ func parseCLIOptions(cx *cli.Context, config *Config) (err error) {
 		}
 		mergeMaps(config.Headers, headers)
 	}
+	if cx.IsSet("add-custom-claims") {
+		customClaims, err := decodeKeyPairs(cx.StringSlice("add-custom-claims"))
+		if err != nil {
+			return err
+		}
+		mergeMaps(config.AddCustomClaims, customClaims)
+	}
 	if cx.IsSet("resources") {
 		for _, x := range cx.StringSlice("resources") {
 			resource, err := newResource().parse(x)

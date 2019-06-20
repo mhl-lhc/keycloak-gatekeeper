@@ -360,7 +360,7 @@ func (r *oauthProxy) responseHeaderMiddleware(headers map[string]string) func(ht
 }
 
 // identityHeadersMiddleware is responsible for add the authentication headers for the upstream
-func (r *oauthProxy) identityHeadersMiddleware(custom []string) func(http.Handler) http.Handler {
+func (r *oauthProxy) identityHeadersMiddleware(custom []string, customHeaders map[string]string) func(http.Handler) http.Handler {
 	customClaims := make(map[string]string)
 	for _, x := range custom {
 		customClaims[x] = fmt.Sprintf("X-Auth-%s", toHeader(x))
@@ -396,6 +396,12 @@ func (r *oauthProxy) identityHeadersMiddleware(custom []string) func(http.Handle
 				}
 				// inject any custom claims
 				for claim, header := range customClaims {
+					if claim, found := user.claims[claim]; found {
+						req.Header.Set(header, fmt.Sprintf("%v", claim))
+					}
+				}
+				// inject any custom header claims
+				for header, claim := range customHeaders {
 					if claim, found := user.claims[claim]; found {
 						req.Header.Set(header, fmt.Sprintf("%v", claim))
 					}

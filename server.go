@@ -261,7 +261,7 @@ func (r *oauthProxy) createReverseProxy() error {
 		e := engine.With(
 			r.authenticationMiddleware(x),
 			r.admissionMiddleware(x),
-			r.identityHeadersMiddleware(r.config.AddClaims))
+			r.identityHeadersMiddleware(r.config.AddClaims, r.config.AddCustomClaims))
 
 		for _, m := range x.Methods {
 			if !x.WhiteListed {

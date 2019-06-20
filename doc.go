@@ -267,6 +267,8 @@ type Config struct {
 	MatchClaims map[string]string `json:"match-claims" yaml:"match-claims" usage:"keypair values for matching access token claims e.g. aud=myapp, iss=http://example.*"`
 	// AddClaims is a series of claims that should be added to the auth headers
 	AddClaims []string `json:"add-claims" yaml:"add-claims" usage:"extra claims from the token and inject into headers, e.g given_name -> X-Auth-Given-Name"`
+	// AddCustomClaims is a series of claims that should be added to custom headers
+	AddCustomClaims map[string]string `json:"add-custom-claims" yaml:"add-custom-claims" usage:"extra claims from the token and inject into custom headers, e.g x-pip-firstName=given_name -> x-pip-firstName: <give_name>"`
 
 	// TLSCertificate is the location for a tls certificate
 	TLSCertificate string `json:"tls-cert" yaml:"tls-cert" usage:"path to ths TLS certificate"`
